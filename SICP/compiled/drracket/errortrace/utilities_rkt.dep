@@ -1,0 +1,1 @@
+("6.11" ("a86135069f0d2d0fb28389a7a4749bcdb1a8e824" . "6216f26b5ef4167dee68b774475aab979b7cb4ad") #"/media/cai/WORK Section/Computer & Programming/SICP/sicp-lang.rkt" (collects #"errortrace" #"errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
