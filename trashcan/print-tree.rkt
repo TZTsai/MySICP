@@ -1,0 +1,63 @@
+(define (print-btree btree)
+  (define (size exp)
+    (string-length (->string exp)))
+  (define (half size)
+    (quotient (+ size 1) 2))
+  (define (make-space total left right)
+    (list total left right))
+  (define (get-space btree)
+    (if (null? btree)
+        (list 2 0 0)
+        (car (btree-entry btree))))
+  (define (total space)
+    (car space))
+  (define (left-arm space)
+    (half (cadr space)))
+  (define (left-blank space)
+    (- (cadr space) (left-arm space)))
+  (define (right-arm space)
+    (half (caddr space)))
+  (define (right-blank space)
+    (- (caddr space) (right-arm space)))
+  (define (alloc-space btree)
+    (if (null? btree)
+        null
+        (letrec ([left (alloc-space (btree-left btree))]
+                 [right (alloc-space (btree-right btree))]
+                 [entry (btree-entry btree)])
+          (let ([l-spc (total (get-space left))]
+                [r-spc (total (get-space right))])
+            (make-btree
+             left
+             (cons (make-space
+                    (+ l-spc r-spc)
+                    l-spc r-spc)
+                   entry)
+             right)))))
+  (define (layers btree)
+    (define (partial-layers init-depth)
+      (if (null? (btree-layer btree init-depth))
+          null
+          (cons (btree-layer btree init-depth)
+                (partial-layers (+ init-depth 1)))))
+    (partial-layers 0))
+  (define (layer->string layer)
+    (define (entry->string entry)
+      (let ([space (car entry)])
+        (string-append
+         (make-string (left-blank space) #\ )
+         (make-string (- (left-arm space)
+                         (quotient (add1 (size (cdr entry))) 2))
+                      #\-)
+         (->string (cdr entry))
+         (make-string (- (right-arm space)
+                         (quotient (size (cdr entry)) 2))
+                      #\-)
+         (make-string (right-blank space) #\ ))))
+    (string-append
+     (accumulate string-append ""
+                 (map entry->string layer))
+     "\n"))
+  (let ((lines (layers (alloc-space btree))))
+    (for-each display (map layer->string lines))
+    (map layer->string lines)))

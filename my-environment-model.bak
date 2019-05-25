@@ -1,0 +1,37 @@
+#lang racket
+
+;; we limit our language in such a way that any value is either a number or a lambda expression and all symbols are the
+;; the names of a value
+
+(define (make-binding name value)
+  (cons name value))
+
+(define (make-environment bindings parent)
+  (cons bindings parent))
+(define (bindings env)
+  (car env))
+(define (parent env)
+  (cdr env))
+
+(define (global-environment? env)
+  (null? (parent env)))
+
+(define (value name env)
+  (let ((v (assoc name (bindings env))))
+    (if v
+        v
+        (if (global-environment? env)
+            (error "unbound name:" name)
+            (value name (parent env))))))
+
+(define (operator exp)
+  (car exp))
+
+(define (operands exp)
+  (cdr exp))
+
+(define (eval exp)
+  (cond [(list? exp) (apply (eval (operator exp))
+                            (map eval (operands exp)))]
+        [(name? exp) (value exp)]
+        
