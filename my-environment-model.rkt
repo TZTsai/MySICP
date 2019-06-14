@@ -10,8 +10,7 @@
       (car lst)
       (last-item (cdr lst))))
 
-
-
+;; data structures
 (define (make-binding name value)
   (cons name value))
 
@@ -39,6 +38,7 @@
                          ((parent 'lookup) name))))]))))
 
 
+;; global env
 (define global
   (make-environment
    (list (make-binding '+ +)
@@ -69,6 +69,7 @@
          (make-binding 'display display))
    null))
 
+;; proc data struct
 (define (make-proc lambda-exp env)
   (define (match-bindings names vals)
     (if (or (null? names) (null? vals))
@@ -90,13 +91,13 @@
 (define (apply-compound-proc proc args)
   ((cadr proc) args))
 
+;; eval <-> apply
 (define (Eval exp env)
   (define (operator exp)
     (car exp))
   (define (operands exp)
     (cdr exp))
   (cond [(or (number? exp) (string? exp)) exp]
-
         [(symbol? exp)
          ((env 'lookup) exp)]
         [(list? exp)
@@ -150,7 +151,6 @@
 
 
 (define (Apply op args)
-  ;(for-each display (list "apply: " op " on " args)) (newline)
   (if (compound-proc? op)
       (apply-compound-proc op args)
       (apply op args))) ;apply primitive proc

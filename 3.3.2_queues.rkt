@@ -1,51 +1,22 @@
 #lang racket
-(require "3.3.1_mutable-list.rkt")
-(define (list-tail l)
-  (if (null? (mcdr l))
-      l
-      (list-tail (mcdr l))))
+(require "sicp-lang.rkt")
+(provide (all-defined-out))
 
-;; imp a queue
-;; (define (make-queue)
-;;   (define queue null)
-;;   (define (insert-queue! x)
-;;     (if (null? queue)
-;;         (set! queue (mcons x null))
-;;         (set-cdr! (list-tail queue)
-;;                   (mcons x null))))
-;;   (define (delete-queue!)
-;;     (set! queue (mcdr queue)))
-;;   (define (front-queue)
-;;     (mcar queue))
-;;   (define (dispatch m)
-;;     (cond [(eq? m 'insert) insert-queue!]
-;;           [(eq? m 'delete) (delete-queue!)]
-;;           [(eq? m 'front) (front-queue)]
-;;           [else (error "unknown message: MAKE-QUEUE" m)]))
-;;   dispatch)
-
-;; (define (insert-queue! q x) ((q 'insert) x))
-;; (define (delete-queue! q) (q 'delete))
-;; (define (front-queue q) (q 'front))
-
-(define (front-ptr queue) (mcar queue))
-(define (rear-ptr queue) (mcdr queue))
-
+(define (front-ptr queue) (car queue))
+(define (rear-ptr queue) (cdr queue))
 (define (set-front-ptr! queue item)
   (set-car! queue item))
 (define (set-rear-ptr! queue item)
-  (set-mkfontscale fonts/TTF cdr! queue item))
-
+  (set-cdr! queue item))
 (define (empty-queue? queue)
   (null? (front-ptr queue)))
 
 (define (make-queue) (mcons '() '()))
-;; this imp of queue saves the need to traverse the queue to find the last pair
 (define (front-queue queue)
   (if (empty-queue? queue)
       (error "FRONT called with an
               empty queue" queue)
-      (mcar (front-ptr queue))))
+      (car (front-ptr queue))))
 
 (define (insert-queue! queue item)
   (let ((new-pair (mcons item '())))
@@ -63,16 +34,16 @@
                  an empty queue" queue))
         (else (set-front-ptr!
                queue
-               (mcdr (front-ptr queue)))
+               (cdr (front-ptr queue)))
               queue)))
 
 (define (print-queue queue)
   (define (print-seq seq)
     (cond [(null? seq) (display "")]
-          [(null? (mcdr seq)) (display (mcar seq))]
-          [else (display (mcar seq))
+          [(null? (cdr seq)) (display (car seq))]
+          [else (display (car seq))
                 (display " ")
-                (print-seq (mcdr seq))]))
+                (print-seq (cdr seq))]))
   (display "<")
   (print-seq (front-ptr queue))
   (display ">"))
@@ -92,7 +63,7 @@
     (define (delete!)
       (cond [(empty?) (error "DELETE! called with
                               an empty queue")]
-            [else (set! front-ptr (mcdr front-ptr))]))
+            [else (set! front-ptr (cdr front-ptr))]))
     (define (dispatch m)
       (cond [(eq? m 'insert!) insert!]
             [(eq? m 'delete!) (delete!)]
@@ -213,16 +184,3 @@
       (display "")
       (print-seq (front-ptr-deque q)))
   (display ">"))
-
-;; test
-(define dq (make-deque))
-(front-insert-deque! dq 1)
-(front-insert-deque! dq 2)
-(rear-insert-deque! dq 3)
-(rear-insert-deque! dq 6)
-(print-deque dq)
-(newline)
-(rear-delete-deque! dq)
-(front-delete-deque! dq)
-(print-deque dq)
-(newline)

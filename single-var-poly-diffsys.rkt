@@ -133,7 +133,7 @@
         ((and (variable? p1) (variable? p2))
          (make-exponentiation p1 2))
         ((sum? p1)
-         (make-sum (make-product (addend p1) p2) 
+         (make-sum (make-product (addend p1) p2)
                    (make-product (augend p1) p2)))
         ((sum? p2)
          (make-sum (make-product p1 (addend p2))
