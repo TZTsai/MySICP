@@ -336,13 +336,18 @@ For efficiency, I write a built-in chip for DFF
            (= (bus-width OUT) 16))
       (let ([lds (map (lambda (n) (make-wire))
                       (enum 1024))]
-            [address (bits->int (bus-bits ADR))])
+            [address (bits->int (bus-bits ADR))]
+            [memos (map (lambda (n) (make-bus 16))
+                        (enum 1024))])
         (define (action)
           (for-each
            (lambda (n)
-             (let ([this-ld (list-ref lds n)])
+             (let ([this-ld (list-ref lds n)]
+                   [this-memo (list-ref memos n)])
                (if (= n address)
-                   (this-ld (get-bit ld))
+                   (begin
+                     (this-ld (get-bit ld))
+                     (OUT (bus-bits this-memo)))
                    (this-ld 0))))
            (enum 1024)))
         ((ld 'add-action!) action)
@@ -350,7 +355,9 @@ For efficiency, I write a built-in chip for DFF
                     (((ADR n) 'add-action!) action))
                   (enum 10))
         (for-each (lambda (n)
-                    (register IN (list-ref lds n) OUT))
+                    (register IN
+                              (list-ref lds n)
+                              (list-ref memos n)))
                   (enum 1024)))
       (error "wrong bus width: RAM16K")))
 

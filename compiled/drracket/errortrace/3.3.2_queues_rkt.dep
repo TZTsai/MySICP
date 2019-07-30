@@ -1,0 +1,1 @@
+("7.2" racket ("6dafb6bf5f2fb8e000864a800c146512e4d8b635" . "400e96a11f229a8e09bd7ccfaa1766193a694946") #"E:\\Computer & Programming\\SICP\\sicp-lang.rkt" (collects #"errortrace" #"errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))

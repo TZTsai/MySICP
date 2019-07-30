@@ -1,5 +1,5 @@
 #lang racket
-(require (only-in "sicp-lang.rkt" runtime))
+(require "sicp-lang.rkt")
 (provide (all-defined-out))
 
 ;;; some useful patterns

@@ -94,7 +94,7 @@
   ((wire 'add-action!) action-procedure))
 
 
-;; agenda
+;; use an agenda to simulate the circuit
 (define (after-delay delay action)
   (add-to-agenda!
    (+ delay (current-time the-agenda))
@@ -110,7 +110,7 @@
         (remove-first-agenda-item! the-agenda)
         (propagate))))
 
-;; impl of agenda
+;; imp of agenda
 (define (make-time-segment time queue)
   (cons time queue))
 (define (segment-time s) (car s))
@@ -184,6 +184,9 @@
               (front-queue
                (segment-queue first-seg)))))
 
+;; Ex 3.32
+
+
 ;; probe
 (define (probe name wire)
   (add-action!
@@ -207,6 +210,17 @@
 (define sum (make-wire))
 (define carry (make-wire))
 
-(half-adder input-1 input-2 sum carry)
 (probe 'sum sum)
 (probe 'carry carry)
+
+(half-adder input-1 input-2 sum carry)
+
+(display "first test")
+(newline)
+(set-signal! input-1 1)
+(propagate)
+
+(display "second test")
+(newline)
+(set-signal! input-2 1)
+(propagate)
