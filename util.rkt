@@ -2,7 +2,7 @@
 (require "sicp-lang.rkt")
 (provide (all-defined-out))
 
-;;; some useful patterns
+;;; several useful patterns
 
 (define (fold comb init)
   (define (fast-comb item cnt)
