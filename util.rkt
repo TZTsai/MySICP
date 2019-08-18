@@ -11,9 +11,9 @@
           (else ((fold comb (comb item init)) item (sub1 cnt)))))
   fast-comb)
 
-(define (compose f g)
+(define (compose g h)
   (lambda (x)
-    (f (g x))))
+    (g (h x))))
 
 (define repeated (fold compose identity))
 
