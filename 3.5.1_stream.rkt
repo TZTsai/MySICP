@@ -2,7 +2,7 @@
 (require "sicp-lang.rkt" "util.rkt")
 (provide stream-car stream-cdr stream-null? cons-stream
          the-empty-stream stream-ref stream-map stream-filter
-         display-stream display-partial-stream)
+         display-stream display-partial-stream force delay)
 
 
 (define (stream-ref s n)
@@ -60,8 +60,8 @@
 
 
 ;; impl of delay and force
-;; (define-syntax-rule (delay exp)
-;;   (lambda () exp))
+(define-syntax-rule (delay-simple exp)
+  (lambda () exp))
 
 ;; use memoization to store the forced results
 (define (memo-proc proc)
@@ -74,14 +74,20 @@
                  result)
           result))))
 
-(define-syntax-rule (delay exp)
+(define-syntax-rule (delay-memo exp)
   (memo-proc (lambda () exp)))
 
-(define (force d) (d))
+(define-syntax-rule (delay exp)
+  (delay-memo exp))
+
+(define (force d)
+  ;; (display "forcing ")
+  ;; (displayln d)
+  (d))
 
 
 
-;; the efficieny of stream
+;; the efficiency of stream
 
 ;; give the second odd number in the
 ;; interval [10000, 1000000]:

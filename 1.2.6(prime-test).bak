@@ -1,6 +1,5 @@
 #lang racket
 (require "sicp-lang.rkt")
-(require (lib "27.ss" "srfi"))
 
 (define (square x)
   (* x x))

@@ -30,11 +30,11 @@
                        ((parent 'set!) name val))))]
             [(eq? request 'lookup)
              (lambda (name)
-               (if (dict-has-key? bindings name)
-                   (dict-ref bindings name)
-                   (if (null? parent)
-                       (error "unbound name:" name)
-                       ((parent 'lookup) name))))]))))
+                 (if (dict-has-key? bindings name)
+                     (dict-ref bindings name)
+                     (if (null? parent)
+                         (error "unbound name:" name)
+                         ((parent 'lookup) name))))]))))
 
 (define (make-proc lambda-exp env)
   (define (match-bindings names vals)
@@ -46,11 +46,11 @@
          (lambda (args)
            (let ((pars (cadr lambda-exp))
                  (body (cddr lambda-exp)))
-             (let ((local-env (make-environment (match-bindings pars args) env)))
-               (if (= (length pars)
-                      (length args))
-                   (last-item (map (lambda (exp) (Eval exp local-env)) body))
-                   (error "incorrect number of arguments:" lambda-exp args)))))))
+             (let (local-env (make-environment (match-bindings pars args) env))
+                (if (= (length pars)
+                        (length args))
+                    (last-item (map (lambda (exp) (Eval exp local-env)) body))
+                    (error "incorrect number of arguments:" lambda-exp args)))))))
     (list 'compound apply)))
 (define (compound-proc? proc)
   (and (list? proc) (eq? (car proc) 'compound)))
@@ -111,7 +111,7 @@
                         ((env 'define)
                          proc
                          (Eval (append (list 'lambda pars) body) env)))  
-                      ;bind to a lambda expression
+                         ;bind to a lambda expression
                       (let ((name (cadr exp))  ;define a name
                             (body (caddr exp)))
                         (if (null? (cdddr exp))
@@ -133,13 +133,13 @@
                            (check
                             (lambda (cases)
                               (cond ((not (null? cases))
-                                     (let ((case (car cases)))
-                                       (if (or (eq? (pred case) 'else)
-                                               (Eval (pred case) env))
-                                           (last-item (map (lambda (e) (Eval e env))
-                                                           (body case)))
-                                           (check (cdr cases)))))))))
-                    (check cases))]
+                                    (let ((case (car cases)))
+                                      (if (or (eq? (pred case) 'else)
+                                              (Eval (pred case) env))
+                                          (last-item (map (lambda (e) (Eval e env))
+                                                          (body case)))
+                                          (check (cdr cases)))))))))
+                        (check cases))]
                  [else (Apply (Eval op env)
                               (map (lambda (e) (Eval e env))
                                    (operands exp)))]))]

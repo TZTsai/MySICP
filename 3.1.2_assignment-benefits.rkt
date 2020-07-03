@@ -67,7 +67,7 @@
 
 (define (estimate-integral P x1 x2 y1 y2 trials)
   (let ([experiment (λ () (P (rand-in-range x1 x2)
-                             (rand-in-range y1 y2)))])
+                              (rand-in-range y1 y2)))])
     (monto-carlo trials experiment)))
 
 (define (estimate-pi** trials)

@@ -1,8 +1,9 @@
 #lang racket
 (require ;"sicp-lang.rkt"
  "util.rkt"
+ "math.rkt"
  "3.5.1_stream.rkt")
-
+(provide (all-defined-out))
 
 ;; Inifinite stream
 
@@ -18,16 +19,13 @@
 
 ;; generate a stream of primes using the sieve of Eratosthenes
 
-(define (divisible? x n)
-  (= (remainder x n) 0))
-
 (define (sieve s)
   (let ([first (stream-car s)])
     (cons-stream
      first
      (sieve (stream-filter
              (lambda (n)
-               (not (divisible?
+               (not (divides?
                      n first)))
              (stream-cdr s))))))
 
@@ -66,14 +64,11 @@
     prime?
     (integers-start-from 3))))
 
-(define (square n)
-  (* n n))
-
 (define (prime? n)
   (define (iter ps)
     (let ([first (stream-car ps)])
       (or (> (square first) n)
-          (if (divisible?
+          (if (divides?
                n first)
               false
               (iter (stream-cdr ps))))))
@@ -103,7 +98,7 @@
 
 
 ;; Ex 3.55
-(define (partial-sums s)
+(define (partial-sums-orig s)
   (let ([first (stream-car s)])
     (cons-stream first
                  (add-streams
@@ -111,9 +106,16 @@
                   (partial-sums
                    (stream-cdr s))))))
 
+(define (partial-sums s)
+  (define ps
+    (cons-stream (stream-car s)
+                 (add-streams
+                  (stream-cdr s) ps)))
+  ps)
+
 ; test
 (define triangles (partial-sums natural-numbers))
-; (stream-ref triangles 5)
+; (stream-ref triangles 8)
 
 
 ;; Ex 3.56
@@ -255,6 +257,6 @@
 (define tangent-series
   (div-series sine-series cosine-series))
 
-(display-partial-stream tangent-series 10)
+;; (display-partial-stream tangent-series 10)
 
 ; stream 也太妙了吧

@@ -32,6 +32,9 @@
               (* c r))))
   (iter 1 1))
 
+(define (divides? a b)
+  (= (remainder b a) 0))
+
 (define (prime? n)
   (define (smallest-divisor n)
     (find-divisor n 2))
@@ -41,8 +44,6 @@
     (cond ((> (square test-divisor) n) n)
           ((divides? test-divisor n) test-divisor)
           (else (find-divisor n (next test-divisor)))))
-  (define (divides? a b)
-    (= (remainder b a) 0))
   (and (> n 1) (= n (smallest-divisor n))))
 
 (define (GCD a b)
