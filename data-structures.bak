@@ -363,14 +363,19 @@
                   (merge-btree
                    r2
                    (make-btree
-                    (merge-btree l1 (adjoin-btree x2 l2))
+                    (merge-btree
+                     l1
+                     (adjoin-btree
+                      x2 l2))
                     x1
                     r1)))
                  ((equal? x1 x2)
                   (make-btree
-                   (merge-btree l1 l2)
-                   x1
-                   (merge-btree r1 r2)))
+                   (merge-btree
+                    l1 l2)
+                  x1
+                  (merge-btree
+                   r1 r2)))
                  (else
                   (merge-btree t2 t1)))))))
 

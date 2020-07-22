@@ -1,5 +1,5 @@
 #lang racket
-(require "sicp-lang.rkt" "util.rkt" "data-structures.rkt")
+(require "sicp-lang.rkt" racket/trace "util.rkt" "data-structures.rkt")
 
 ;;; ex 2.73
 
