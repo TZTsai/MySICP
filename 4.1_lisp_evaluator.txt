@@ -8,7 +8,7 @@
       (let ((record (assoc key (cdr table))))
         (if record
             (cdr record)
-            #f)))
+            false)))
     (define (insert! key val)
       (let ((record (assoc key (cdr table))))
         (if record

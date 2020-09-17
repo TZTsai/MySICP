@@ -12,7 +12,7 @@
       (let ((record (assoc key (cdr table))))
         (if record
             (cdr record)
-            #f)))
+            false)))
     (define (insert! key val)
       (let ((record (assoc key (cdr table))))
         (if record
@@ -65,8 +65,7 @@
            arguments
            (procedure-environment procedure))))
         (else
-         (error
-          "Unknown procedure type - APPLY" procedure))))
+         (error "Unknown procedure type - APPLY" procedure))))
 
 
 (define (list-of-values exps env)
@@ -782,8 +781,8 @@
 (define Global (setup-environment))
 
 ; driver loop function
-(define input-prompt "Input:")
-(define output-prompt "Output:")
+(define input-prompt "--- INPUT  ---")
+(define output-prompt "--- OUTPUT ---")
 
 (define (driver-loop)
   (prompt-for-input input-prompt)
@@ -794,10 +793,10 @@
   (driver-loop))
 
 (define (prompt-for-input string)
-  (newline) (newline) (display string) (newline))
+  (newline) (newline) (display string) (newline) (display "> "))
 
 (define (announce-output string)
-  (newline) (display string) (newline))
+  (newline) (display string) (newline) (display "> "))
 
 (define (user-print object)
   (if (compound-procedure? object)
@@ -809,5 +808,5 @@
 
 ; start driver loop
 (use-dispatch)
-(display "Start M-Eval.")
+(display "Start M-Evaluator.")
 (driver-loop)
