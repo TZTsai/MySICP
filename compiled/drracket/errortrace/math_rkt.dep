@@ -1,1 +1,0 @@
-("7.5" ta6nt ("38c9d515691773541b19752676972830c983a171" . "6f66bf5dc0838945f9b10c758576dc8df76b30d5") #"E:\\Learning\\Programming\\SICP\\sicp-lang.rkt" #"E:\\Learning\\Programming\\SICP\\util.rkt" (collects #"errortrace" #"errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
