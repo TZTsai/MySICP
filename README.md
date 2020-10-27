@@ -1,2 +1,2 @@
-# MySICP
-My code when I am working through the classic book SICP. Started from 2019/3/18.
+# SICP Solutions
+My exercise solutions and several toy projects for the classical textbook SICP.
